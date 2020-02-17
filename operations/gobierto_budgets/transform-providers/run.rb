@@ -29,7 +29,7 @@ def freelance?(row)
 end
 
 def parse_invoice_row(row)
-  formatted_date = Date.strptime(row["date"], "%m/%d/%Y").strftime("%Y-%m-%d")
+  formatted_date = Date.strptime(row["date"], "%d/%m/%Y").strftime("%Y-%m-%d")
   value = row["value"].tr(".", "").tr(",", ".").to_f
 
   {

@@ -68,7 +68,8 @@ CSV.foreach(data_file, headers: true, col_sep: ",", quote_char: '"') do |row|
     attributes = base_attributes.merge(parse_invoice_row(row))
     nitems += 1
     output_data << attributes
-  rescue ArgumentError
+  rescue ArgumentError => e
+    puts e
     puts row
   end
 end

@@ -10,9 +10,9 @@ GOBIERTO_ETL_UTILS=$DEV_DIR/gobierto-etl-utils
 # Extract > Download data sources
 cd $GOBIERTO_ETL_UTILS; ruby operations/download-s3/run.rb "esplugues/budgets/$XBRL_FILE" $WORKING_DIR/
 
-cd $GOBIERTO_ETL_UTILS; ruby operations/gobierto_budgets/xbrl/trimloc/transform-execution/run.rb operations/gobierto_budgets/xbrl/dictionaries/xbrl_trimloc_dictionary.yml $WORKING_DIR/$XBRL_FILE 8077 $YEAR $WORKING_DIR/budgets-execution-$YEAR.json
+cd $GOBIERTO_ETL_UTILS; ruby operations/gobierto_budgets/xbrl/trimloc/transform-planned-updated/run.rb operations/gobierto_budgets/xbrl/dictionaries/xbrl_trimloc_dictionary.yml $WORKING_DIR/$XBRL_FILE 8077 $YEAR $WORKING_DIR/budgets-planned-updated-$YEAR.json
 
-cd $GOBIERTO_ETL_UTILS; ruby operations/gobierto_budgets/import-executed-budgets/run.rb $WORKING_DIR/budgets-execution-$YEAR.json $YEAR
+cd $GOBIERTO_ETL_UTILS; ruby operations/gobierto_budgets/import-planned-budgets-updated/run.rb $WORKING_DIR/budgets-planned-updated-$YEAR.json $YEAR
 
 # Load > Calculate totals
 echo "8077" > $WORKING_DIR/organization.id.txt

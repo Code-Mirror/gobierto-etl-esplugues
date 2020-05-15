@@ -2,17 +2,21 @@
 
 set -e
 
-XBRL_FILE="AJ-TrimLoc-2020_1t.xbrl"
 YEAR=2020
 WORKING_DIR=/tmp/esplugues
 GOBIERTO_ETL_UTILS=$DEV_DIR/gobierto-etl-utils
 
 # Extract > Download data sources
+XBRL_FILE="08077AA000-Penloc-2020.xbrl"
 cd $GOBIERTO_ETL_UTILS; ruby operations/download-s3/run.rb "esplugues/budgets/$XBRL_FILE" $WORKING_DIR/
+cd $GOBIERTO_ETL_UTILS; ruby operations/gobierto_budgets/xbrl/penloc/transform-planned/run.rb operations/gobierto_budgets/xbrl/dictionaries/xbrl_penloc_dictionary.yml $WORKING_DIR/$XBRL_FILE 8077 $YEAR $WORKING_DIR/budgets-planned-$YEAR.json
+cd $GOBIERTO_ETL_UTILS; ruby operations/gobierto_budgets/import-planned-budgets/run.rb $WORKING_DIR/budgets-planned-$YEAR.json $YEAR
 
-cd $GOBIERTO_ETL_UTILS; ruby operations/gobierto_budgets/xbrl/trimloc/transform-execution/run.rb operations/gobierto_budgets/xbrl/dictionaries/xbrl_trimloc_dictionary.yml $WORKING_DIR/$XBRL_FILE 8077 $YEAR $WORKING_DIR/budgets-execution-$YEAR.json
-
-cd $GOBIERTO_ETL_UTILS; ruby operations/gobierto_budgets/import-executed-budgets/run.rb $WORKING_DIR/budgets-execution-$YEAR.json $YEAR
+# Extract > Download data sources
+XBRL_FILE="AJ-TrimLoc-2020_1t.xbrl"
+cd $GOBIERTO_ETL_UTILS; ruby operations/download-s3/run.rb "esplugues/budgets/$XBRL_FILE" $WORKING_DIR/
+cd $GOBIERTO_ETL_UTILS; ruby operations/gobierto_budgets/xbrl/trimloc/transform-planned/run.rb operations/gobierto_budgets/xbrl/dictionaries/xbrl_trimloc_dictionary.yml $WORKING_DIR/$XBRL_FILE 8077 $YEAR $WORKING_DIR/budgets-planned-$YEAR.json
+cd $GOBIERTO_ETL_UTILS; ruby operations/gobierto_budgets/import-planned-budgets/run.rb $WORKING_DIR/budgets-planned-$YEAR.json $YEAR
 
 # Load > Calculate totals
 echo "8077" > $WORKING_DIR/organization.id.txt
